@@ -13,12 +13,6 @@
 %gitAdd(RepoInput, Archivos, RepoOutput)
 %gitCommit(RepoInput, Mensaje, RepoOutput)
 %gitPush(RepoInput, RepoOutput)
-%
-%gitPull(RepoInput,RepoOutput)
-%gitStatus(RepoInput,RepoStatusStr)
-%gitLog(RepoInput,RepoLogStr)
-%gitBranch(RepoInput, NombreRama,RepoOutput)
-%gitCheckout(RepoInput, NombreRama, RepoOutput)
 % #|---------------------------------------------------------------------------------------------|#
 
 %Dominios
@@ -29,6 +23,10 @@
 %Secundarias
 
 %Hechos
+workspace([]).
+indexGit([]).
+localRepository([]).
+remoteRepository([]).
 
 %reglas
 %MANEJO DE LISTAS
@@ -38,6 +36,13 @@ seEncuentra(Elemento,Lista):-member(Elemento,Lista).
 
 concatenar([],L,L).
 concatenar([X|L1],L2,[X|L3]):-concatenar(L1,L2,L3).
+
+%PROGRAMA
+gitInit(NombreRepo, Autor, [Fecha, NombreRepo, Autor, W, I, L, R]):- get_time(X), convert_time(X,Fecha),
+                                                                  workspace(W),
+                                                                  indexGit(I),
+                                                                  localRepository(L),
+                                                                  remoteRepository(R).
 
 
 
