@@ -17,9 +17,18 @@
 % #|---------------------------------------------------------------------------------------------|#
 
 %Dominios
-%
+%Repositorio
+%Archivos
+%Nombres
+%Autor
+%Mensaje
+
 %Predicados
-%
+% agregarArchivoW(Repositorio,Archivos,Repositorio) aridad=3
+% gitInit(Nombres, Autor, Repositorio) aridad=3
+% gitAdd(Repositorio,Archivo,Repositorio) aridad=3
+% gitCommit(Repositorio,Mensaje,Repositorio) aridad=3
+% gitPush(Repositorio,Repositorio) aridad=2
 
 %Metas
 %Primarias
@@ -28,7 +37,7 @@
 % gitAdd([Fecha,NombreRepo,Autor,W,I,LR,RR],ListaArchivos,[Fecha,NombreRepo,Autor,W,NI,LR,RR])
 % gitCommit([Fecha,NombreRepo,Autor,W,I,LR,RR],Mensaje,[Fecha,NombreRepo,Autor,W,NI,NLR,RR])
 % gitPush([Fecha,NombreRepo,Autor,W,I,LR,RR],[Fecha,NombreRepo,Autor,W,I,NLR,NRR])
-% 
+%
 % Secundarias
 % add_Elemento(X,[H|T],[H|Tn])
 % concatenar([X|L1],L2,[X|L3])
@@ -41,13 +50,13 @@ indexGit([]).
 localRepository([]).
 remoteRepository([]).
 
-%reglas
+%Reglas
 %MANEJO DE LISTAS
 add_Elemento(X,[],[X]).
 add_Elemento(X,[H|T],[H|Tn]):-add_Elemento(X,T,Tn).
 
 concatenar([],L,L).
-concatenar([H|T],L2,[X|L3]):-concatenar(L1,L2,L3).
+concatenar([X|L1],L2,[X|L3]):-concatenar(L1,L2,L3).
 
 %PROGRAMA
 % Terminos de entrada: Un repositorio, Salida: El mismo repositorio pero
@@ -72,7 +81,7 @@ gitAdd([Fecha,NombreRepo,Autor,W,I,LR,RR],ListaArchivos,[Fecha,NombreRepo,Autor,
                                                                                               concatenar(ListaCoincidencias,I,NI).
 
 hacerCommit(Mensaje,I,Commit):-concatenar([[Mensaje,I]],[],Commit).
-%Terminos de entrada:Repositorio,String,Salida: El repositorio con 
+%Terminos de entrada:Repositorio,String,Salida: El repositorio con
 %index vacio y el localR modificado.
 gitCommit([Fecha,NombreRepo,Autor,W,I,LR,RR],Mensaje,[Fecha,NombreRepo,Autor,W,NI,NLR,RR]):-string(Mensaje),
                                                                                            hacerCommit(Mensaje,I,Commit),
