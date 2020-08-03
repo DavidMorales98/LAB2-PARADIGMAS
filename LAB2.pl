@@ -62,6 +62,8 @@ gitCommit([Fecha,NombreRepo,Autor,W,I,LR,RR],Mensaje,[Fecha,NombreRepo,Autor,W,N
                                                                                            concatenar(Commit,LR,NLR),
                                                                                            indexGit(NI).
 
+gitPush([Fecha,NombreRepo,Autor,W,I,LR,RR],[Fecha,NombreRepo,Autor,W,I,NLR,NRR]):-concatenar(LR,RR,NRR),localRepository(NLR).
+
 
 
 

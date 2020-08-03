@@ -59,8 +59,9 @@ hacerCommit(Mensaje,I,Commit):-string(Mensaje),
 
 gitCommit([Fecha,NombreRepo,Autor,W,I,LR,RR],Mensaje,[Fecha,NombreRepo,Autor,W,NI,NLR,RR]):-string(Mensaje),
                                                                                            hacerCommit(Mensaje,I,Commit),
-                                                                                           add_Elemento(Commit,LR,NLR),
+                                                                                           concatenar(Commit,LR,NLR),
                                                                                            indexGit(NI).
+
 
 
 
