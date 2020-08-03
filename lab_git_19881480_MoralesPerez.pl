@@ -61,9 +61,10 @@ remoteRepository([]).
 
 %Reglas
 %MANEJO DE LISTAS
+%Añade un elemento X al inicio de una lista
 add_Elemento(X,[],[X]).
 add_Elemento(X,[H|T],[H|Tn]):-add_Elemento(X,T,Tn).
-
+%Une dos listas en otra
 concatenar([],L,L).
 concatenar([X|L1],L2,[X|L3]):-concatenar(L1,L2,L3).
 
@@ -79,6 +80,8 @@ gitInit(NombreRepo, Autor, [Fecha, NombreRepo, Autor, W, I, LR, RR]):- get_time(
                                                                     indexGit(I),
                                                                     localRepository(LR),
                                                                     remoteRepository(RR).
+% Busca los elementos coincidentes entre dos listas y crea otra lista
+% que almacena dicho elementos
 coincidencias([],[_|_],[]).
 coincidencias([_|_],[],[]).
 coincidencias([Cabeza|Cola], L, L1):- member(Cabeza,L),coincidencias(Cola, L, L2), add_Elemento(Cabeza, L2, L1).
@@ -88,17 +91,18 @@ coincidencias([Cabeza|Cola], L, L1):- not(member(Cabeza,L)),coincidencias(Cola, 
 % repositorio con el index modificado.
 gitAdd([Fecha,NombreRepo,Autor,W,I,LR,RR],ListaArchivos,[Fecha,NombreRepo,Autor,W,NI,LR,RR]):-coincidencias(ListaArchivos,W,ListaCoincidencias),
                                                                                               concatenar(ListaCoincidencias,I,NI).
-
+%Hace un commit con un mensaje y lista de archivos dada
 hacerCommit(Mensaje,I,Commit):-concatenar([[Mensaje,I]],[],Commit).
 %Terminos de entrada:Repositorio,String,Salida: El repositorio con
 %index vacio y el localR modificado.
-gitCommit([Fecha,NombreRepo,Autor,W,I,LR,RR],Mensaje,[Fecha,NombreRepo,Autor,W,NI,NLR,RR]):-string(Mensaje),
+gitCommit([Fecha,NombreRepo,Autor,W,I,LR,RR],Mensaje,[Fecha,NombreRepo,Autor,W,NI,NLR,RR]):-string(Mensaje),not(I is []),
                                                                                            hacerCommit(Mensaje,I,Commit),
                                                                                            concatenar(Commit,LR,NLR),
                                                                                            indexGit(NI).
 % Terminos de Entrada,Repositorio,Salida:Repositorio con el localR y
 % remoteR modificado.
-gitPush([Fecha,NombreRepo,Autor,W,I,LR,RR],[Fecha,NombreRepo,Autor,W,I,NLR,NRR]):-concatenar(LR,RR,NRR),
+gitPush([Fecha,NombreRepo,Autor,W,I,LR,RR],[Fecha,NombreRepo,Autor,W,I,NLR,NRR]):-not(LR is []),
+                                                                                  concatenar(LR,RR,NRR),
                                                                                   localRepository(NLR).
 
 % ==============================EJEMPLOS DE EJECUCION=============
