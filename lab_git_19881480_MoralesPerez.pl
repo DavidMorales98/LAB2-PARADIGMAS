@@ -108,7 +108,9 @@ gitPush([Fecha,NombreRepo,Autor,W,I,LR,RR],[Fecha,NombreRepo,Autor,W,I,NLR,NRR])
 
 
 % ==============================EJEMPLOS DE EJECUCION=============
-%
+%gitInit("LAB","David Morales",R),agregarArchivoW(R,"lab1",R1),gitAdd(R1,["lab1"],R2),gitCommit(R2,"Lab paradigmas",R3),gitPush(R3,R4).
+% gitInit("Juegos","JavieraNorambuena",R),agregarArchivosW(R,"Sims4",R1),agregarArchivosW(R1,"The Last Of Us",R2),gitAdd(R2,["Candy Crush","Sims4"],R3),gitCommit(R3,"Finalizados",R4),gitPush(R4,R5).
+%gitInit("Steam","Jeferson",R),agregarArchivoW(R,"GTAV",R1),gitAdd(R1,["GTAV"],R2),agregarArchivoW(R2,"Smite",R3),gitAdd(R3,["Smite","LOL"],R4),gitCommit(R4,"Fav",R5),gitPush(R6,R7).
 
 
 

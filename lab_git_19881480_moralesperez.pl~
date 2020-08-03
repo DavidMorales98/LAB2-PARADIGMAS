@@ -89,7 +89,7 @@ coincidencias([Cabeza|Cola], L, L1):- not(member(Cabeza,L)),coincidencias(Cola, 
 
 % Terminos de entrada:Repositorio,Lista de String, Salida: El
 % repositorio con el index modificado.
-gitAdd([Fecha,NombreRepo,Autor,W,I,LR,RR],ListaArchivos,[Fecha,NombreRepo,Autor,W,NI,LR,RR]):-not(I=[]),
+gitAdd([Fecha,NombreRepo,Autor,W,I,LR,RR],ListaArchivos,[Fecha,NombreRepo,Autor,W,NI,LR,RR]):-
                                                                                               coincidencias(ListaArchivos,W,ListaCoincidencias),
                                                                                               concatenar(ListaCoincidencias,I,NI).
 %Hace un commit con un mensaje y lista de archivos dada
@@ -97,6 +97,7 @@ hacerCommit(Mensaje,I,Commit):-concatenar([[Mensaje,I]],[],Commit).
 %Terminos de entrada:Repositorio,String,Salida: El repositorio con
 %index vacio y el localR modificado.
 gitCommit([Fecha,NombreRepo,Autor,W,I,LR,RR],Mensaje,[Fecha,NombreRepo,Autor,W,NI,NLR,RR]):-string(Mensaje),
+                                                                                           not(I=[]),
                                                                                            hacerCommit(Mensaje,I,Commit),
                                                                                            concatenar(Commit,LR,NLR),
                                                                                            indexGit(NI).
@@ -107,6 +108,8 @@ gitPush([Fecha,NombreRepo,Autor,W,I,LR,RR],[Fecha,NombreRepo,Autor,W,I,NLR,NRR])
 
 
 % ==============================EJEMPLOS DE EJECUCION=============
+%gitInit("LAB","David Morales",R),agregarArchivoW(R,"lab1",R1),gitAdd(R1,["lab1"],R2),gitCommit(R2,"Lab paradigmas",R3),gitPush(R3,R4).
+% gitInit("Juegos","JavieraNorambuena",R),agregarArchivosW(R,"Sims4",R1),agregarArchivosW(R1,"The Last Of Us",R2),gitAdd(R2,["Candy Crush","Sims4"],R3),gitCommit(R3,"Finalizados",R4),gitPush(R4,R5).
 %
 
 
