@@ -46,13 +46,21 @@ gitInit(NombreRepo, Autor, [Fecha, NombreRepo, Autor, W, I, LR, RR]):- get_time(
                                                                   indexGit(I),
                                                                   localRepository(LR),
                                                                   remoteRepository(RR).
-coincidencia([_|_],[],[]).
-coincidencia([],[_,_],[]).
-coincidencia([H|T], L, L1):- member(H,L),coincidencia(T,L,L2),add_Elemento(H,L2,L1).
-coincidencia([H|T],L,L1):-not(member(H,L)),coincidencia(T,L,L1).
+coincidencias([],[_|_],[]).
+coincidencias([_|_],[],[]).
+coincidencias([Cabeza|Cola], L, L1):- member(Cabeza,L),coincidencias(Cola, L, L2), add_Elemento(Cabeza, L2, L1).
+coincidencias([Cabeza|Cola], L, L1):- not(member(Cabeza,L)),coincidencias(Cola, L, L1).
 
-gitAdd([Fecha,NombreRepo,Autor,W,I,LR,RR],ListaArchivos,[Fecha,NombreRepo,Autor,W,NI,LR,RR]):-coincidencia(ListaArchivos,W,ListaCoincidencias),
+gitAdd([Fecha,NombreRepo,Autor,W,I,LR,RR],ListaArchivos,[Fecha,NombreRepo,Autor,W,NI,LR,RR]):-coincidencias(ListaArchivos,W,ListaCoincidencias),
                                                                                               concatenar(ListaCoincidencias,I,NI).
+
+hacerCommit(Mensaje,I,Commit):-string(Mensaje),
+                              concatenar([[Mensaje,I]],[],Commit).
+
+gitCommit([Fecha,NombreRepo,Autor,W,I,LR,RR],Mensaje,[Fecha,NombreRepo,Autor,W,NI,NLR,RR]):-string(Mensaje),
+                                                                                           hacerCommit(Mensaje,I,Commit),
+                                                                                           add_Elemento(Commit,LR,NLR),
+                                                                                           indexGit(NI).
 
 
 

@@ -54,6 +54,14 @@ coincidencias([Cabeza|Cola], L, L1):- not(member(Cabeza,L)),coincidencias(Cola, 
 gitAdd([Fecha,NombreRepo,Autor,W,I,LR,RR],ListaArchivos,[Fecha,NombreRepo,Autor,W,NI,LR,RR]):-coincidencias(ListaArchivos,W,ListaCoincidencias),
                                                                                               concatenar(ListaCoincidencias,I,NI).
 
+hacerCommit(Mensaje,I,Commit):-string(Mensaje),
+                              concatenar([[Mensaje,I]],[],Commit).
+
+gitCommit([Fecha,NombreRepo,Autor,W,I,LR,RR],Mensaje,[Fecha,NombreRepo,Autor,W,NI,NLR,RR]):-string(Mensaje),
+                                                                                           hacerCommit(Mensaje,I,Commit),
+                                                                                           concatenar(Commit,LR,NLR),
+                                                                                           indexGit(NI).
+
 
 
 
