@@ -10,6 +10,7 @@
 %;.........................................Selectores..........................................
 
 %;.........................................Modificadores..........................................
+%agregarArchivoW(RepoInput,Archivo,RepoOutput)
 %gitAdd(RepoInput, Archivos, RepoOutput)
 %gitCommit(RepoInput, Mensaje, RepoOutput)
 %gitPush(RepoInput, RepoOutput)
@@ -30,29 +31,28 @@ remoteRepository([]).
 
 %reglas
 %MANEJO DE LISTAS
-%agregar un elemento a una lista
-agregarElemento(Elemento,Lista,NuevaLista):-append([Elemento],Lista,NuevaLista).
-seEncuentra(Elemento,Lista):-member(Elemento,Lista).
+add_Elemento(X,[],[X]).
+add_Elemento(X,[H|T],[H|Tn]):-add_Elemento(X,T,Tn).
+
 concatenar([],L,L).
 concatenar([X|L1],L2,[X|L3]):-concatenar(L1,L2,L3).
 
 %PROGRAMA
-obtenerFecha([F,_,_,_,_,_,_],F).
-obtenerNombre([_,N,_,_,_,_,_],N).
-obtenerAutor([_,_,A,_,_,_,_],A).
-obtenerWorkspace([_,_,_,W,_,_,_],W).
-obtenerIndex([_,_,_,_,I,_,_],I).
-obtenerLocalRepository([_,_,_,_,_,LR,_],LR).
-obtenerRemoteRepository([_,_,_,_,_,_,RR],RR).
+agregarArchivoW([Fecha,NombreRepo,Autor,W,I,LR,RR],Archivo,[Fecha,NombreRepo,Autor,NW,I,LR,RR]):-string(Archivo),
+                                                          add_Elemento(Archivo,W,NW).
 
-agregarArchivoW([F,N,A,W,I,L,R],Archivo,[F,N,A,NW,I,L,R]):-string(Archivo),
-                                                          agregarElemento(Archivo,W,NW).
-
-gitInit(NombreRepo, Autor, [Fecha, NombreRepo, Autor, W, I, L, R]):- get_time(X), convert_time(X,Fecha),string(NombreRepo),string(Autor),
+gitInit(NombreRepo, Autor, [Fecha, NombreRepo, Autor, W, I, LR, RR]):- get_time(X), convert_time(X,Fecha),string(NombreRepo),string(Autor),
                                                                    workspace(W),
                                                                   indexGit(I),
-                                                                  localRepository(L),
-                                                                  remoteRepository(R).
+                                                                  localRepository(LR),
+                                                                  remoteRepository(RR).
+coincidencias([],[_|_],[]).
+coincidencias([_|_],[],[]).
+coincidencias([Cabeza|Cola], L, L1):- member(Cabeza,L),coincidencias(Cola, L, L2), add_Elemento(Cabeza, L2, L1).
+coincidencias([Cabeza|Cola], L, L1):- not(member(Cabeza,L)),coincidencias(Cola, L, L1).
+
+gitAdd([Fecha,NombreRepo,Autor,W,I,LR,RR],ListaArchivos,[Fecha,NombreRepo,Autor,W,NI,LR,RR]):-coincidencias(ListaArchivos,W,ListaCoincidencias),
+                                                                                              concatenar(ListaCoincidencias,I,NI).
 
 
 
