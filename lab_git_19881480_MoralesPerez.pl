@@ -39,13 +39,13 @@ concatenar([X|L1],L2,[X|L3]):-concatenar(L1,L2,L3).
 
 %PROGRAMA
 agregarArchivoW([Fecha,NombreRepo,Autor,W,I,LR,RR],Archivo,[Fecha,NombreRepo,Autor,NW,I,LR,RR]):-string(Archivo),
-                                                          add_Elemento(Archivo,W,NW).
+                                                                                                add_Elemento(Archivo,W,NW).
 
 gitInit(NombreRepo, Autor, [Fecha, NombreRepo, Autor, W, I, LR, RR]):- get_time(X), convert_time(X,Fecha),string(NombreRepo),string(Autor),
-                                                                   workspace(W),
-                                                                  indexGit(I),
-                                                                  localRepository(LR),
-                                                                  remoteRepository(RR).
+                                                                    workspace(W),
+                                                                    indexGit(I),
+                                                                    localRepository(LR),
+                                                                    remoteRepository(RR).
 coincidencias([],[_|_],[]).
 coincidencias([_|_],[],[]).
 coincidencias([Cabeza|Cola], L, L1):- member(Cabeza,L),coincidencias(Cola, L, L2), add_Elemento(Cabeza, L2, L1).
@@ -54,15 +54,17 @@ coincidencias([Cabeza|Cola], L, L1):- not(member(Cabeza,L)),coincidencias(Cola, 
 gitAdd([Fecha,NombreRepo,Autor,W,I,LR,RR],ListaArchivos,[Fecha,NombreRepo,Autor,W,NI,LR,RR]):-coincidencias(ListaArchivos,W,ListaCoincidencias),
                                                                                               concatenar(ListaCoincidencias,I,NI).
 
-hacerCommit(Mensaje,I,Commit):-string(Mensaje),
-                              concatenar([[Mensaje,I]],[],Commit).
+hacerCommit(Mensaje,I,Commit):-concatenar([[Mensaje,I]],[],Commit).
 
 gitCommit([Fecha,NombreRepo,Autor,W,I,LR,RR],Mensaje,[Fecha,NombreRepo,Autor,W,NI,NLR,RR]):-string(Mensaje),
                                                                                            hacerCommit(Mensaje,I,Commit),
                                                                                            concatenar(Commit,LR,NLR),
                                                                                            indexGit(NI).
 
-gitPush([Fecha,NombreRepo,Autor,W,I,LR,RR],[Fecha,NombreRepo,Autor,W,I,NLR,NRR]):-concatenar(LR,RR,NRR),localRepository(NLR).
+gitPush([Fecha,NombreRepo,Autor,W,I,LR,RR],[Fecha,NombreRepo,Autor,W,I,NLR,NRR]):-concatenar(LR,RR,NRR),
+                                                                                  localRepository(NLR).
+
+
 
 
 
