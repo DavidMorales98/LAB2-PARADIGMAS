@@ -3,15 +3,15 @@
 %#|---------------------------------------------------------------------------------------------|#
 %;.......................................Representacion........................................
 %repositorio(fecha,nombreRepositorio,autor,workspace,index,localRepository,remoteRepository)
-%fecha=String
-%nombreRepositorio=String
-%Autor=String
-%workspace=Lista de String
-%index=Lista de String
-% Commit es una lista de dos elementos donde el primero es un String y el
-% segundo una lista de String
-%localRepository=Lista de Commit
-%remoteRepository=Lista de Commit
+ %fecha=String
+ %nombreRepositorio=String
+ %autor=String
+ %workspace=Lista de String
+ %index=Lista de String
+%Commit es una lista de dos elementos donde el primero es un String y el
+%segundo una lista de String
+ %localRepository=Lista de Commit
+ %remoteRepository=Lista de Commit
 
 %;........................................Constructores........................................
 %gitInit(NombreRepo,Autor,RepoOutput)
@@ -23,14 +23,14 @@
 %gitAdd(RepoInput, Archivos, RepoOutput)
 %gitCommit(RepoInput, Mensaje, RepoOutput)
 %gitPush(RepoInput, RepoOutput)
-% #|---------------------------------------------------------------------------------------------|#
+%#|---------------------------------------------------------------------------------------------|#
 
 %Dominios
-%Repositorio
-%Archivos
-%Nombres
-%Autor
-%Mensaje
+% Repositorio
+% Archivos
+% Nombres
+% Autor
+% Mensaje
 
 %Predicados
 % agregarArchivoW(Repositorio,Archivos,Repositorio) aridad=3
@@ -47,7 +47,7 @@
 % gitCommit([Fecha,NombreRepo,Autor,W,I,LR,RR],Mensaje,[Fecha,NombreRepo,Autor,W,NI,NLR,RR])
 % gitPush([Fecha,NombreRepo,Autor,W,I,LR,RR],[Fecha,NombreRepo,Autor,W,I,NLR,NRR])
 %
-% Secundarias
+%Secundarias
 % add_Elemento(X,[H|T],[H|Tn])
 % concatenar([X|L1],L2,[X|L3])
 % coincidencias([Cabeza|Cola], L, L1)
@@ -89,21 +89,23 @@ coincidencias([Cabeza|Cola], L, L1):- not(member(Cabeza,L)),coincidencias(Cola, 
 
 % Terminos de entrada:Repositorio,Lista de String, Salida: El
 % repositorio con el index modificado.
-gitAdd([Fecha,NombreRepo,Autor,W,I,LR,RR],ListaArchivos,[Fecha,NombreRepo,Autor,W,NI,LR,RR]):-coincidencias(ListaArchivos,W,ListaCoincidencias),
+gitAdd([Fecha,NombreRepo,Autor,W,I,LR,RR],ListaArchivos,[Fecha,NombreRepo,Autor,W,NI,LR,RR]):-
+                                                                                              coincidencias(ListaArchivos,W,ListaCoincidencias),
                                                                                               concatenar(ListaCoincidencias,I,NI).
 %Hace un commit con un mensaje y lista de archivos dada
 hacerCommit(Mensaje,I,Commit):-concatenar([[Mensaje,I]],[],Commit).
 %Terminos de entrada:Repositorio,String,Salida: El repositorio con
 %index vacio y el localR modificado.
-gitCommit([Fecha,NombreRepo,Autor,W,I,LR,RR],Mensaje,[Fecha,NombreRepo,Autor,W,NI,NLR,RR]):-string(Mensaje),not(I is []),
+gitCommit([Fecha,NombreRepo,Autor,W,I,LR,RR],Mensaje,[Fecha,NombreRepo,Autor,W,NI,NLR,RR]):-string(Mensaje),
+                                                                                           not(I=[]),
                                                                                            hacerCommit(Mensaje,I,Commit),
                                                                                            concatenar(Commit,LR,NLR),
                                                                                            indexGit(NI).
 % Terminos de Entrada,Repositorio,Salida:Repositorio con el localR y
 % remoteR modificado.
-gitPush([Fecha,NombreRepo,Autor,W,I,LR,RR],[Fecha,NombreRepo,Autor,W,I,NLR,NRR]):-not(LR is []),
-                                                                                  concatenar(LR,RR,NRR),
+gitPush([Fecha,NombreRepo,Autor,W,I,LR,RR],[Fecha,NombreRepo,Autor,W,I,NLR,NRR]):-concatenar(LR,RR,NRR),
                                                                                   localRepository(NLR).
+
 
 % ==============================EJEMPLOS DE EJECUCION=============
 %
